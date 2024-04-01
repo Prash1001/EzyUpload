@@ -9,9 +9,10 @@
     <h1>Congratulations!</h1>
     <p>Welcome, <span id="user-email"></span>! You have successfully signed in.</p>
 
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js"></script>
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+
         // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
@@ -21,13 +22,20 @@
             messagingSenderId: "563462109953",
             appId: "1:563462109953:web:038176fad3659884a0f900",
         };
-        firebase.initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
 
-        // Get the user's email
-        const userEmail = firebase.auth().currentUser.email;
+        // Wait for Firebase initialization to complete
+        onAuthStateChanged(getAuth(app), (user) => {
+            if (user) {
+                // Get the user's email
+                const userEmail = user.email;
 
-        // Display the user's email
-        document.getElementById('user-email').textContent = userEmail;
+                // Display the user's email
+                document.getElementById('user-email').textContent = userEmail;
+            } else {
+                // User is not signed in, handle accordingly
+            }
+        });
     </script>
 </body>
 </html>

@@ -1,10 +1,8 @@
 // Import the necessary Firebase modules
-// Import the necessary Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
 
 // Your JavaScript code here
-
 
 // Replace this with your Firebase project configuration
 const firebaseConfig = {
@@ -22,40 +20,32 @@ const app = initializeApp(firebaseConfig);
 // Get reference to the login form
 const loginForm = document.getElementById('login-form');
 
-// Wait for the DOM content to be loaded before executing JavaScript code
-document.addEventListener("DOMContentLoaded", function() {
-  // Get reference to the login form
-  const loginForm = document.getElementById('login-form');
+// Add login event listener
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent the default form submission
 
-  // Add login event listener
-  loginForm.addEventListener('submit', (e) => {
-      e.preventDefault(); // Prevent the default form submission
+    // Get user input
+    const email = loginForm['email'].value;
+    const password = loginForm['password'].value;
 
-      // Get user input
-      const email = loginForm['email'].value;
-      const password = loginForm['password'].value;
-
-      // Sign in user with email and password
-      firebase.auth().signInWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-              // Signed in successfully
-              const user = userCredential.user;
-              console.log('User signed in:', user);
-              // Redirect user to the congratulations page
-              window.location.href = 'NextPage.html';
-          })
-          .catch((error) => {
-              // Handle errors
-              const errorMessage = error.message;
-              console.error('Login error:', errorMessage);
-              // Display error message to the user
-              const errorMessageElement = document.querySelector('.message');
-              errorMessageElement.textContent = errorMessage;
-          });
-  });
+    // Sign in user with email and password
+    signInWithEmailAndPassword(getAuth(app), email, password)
+        .then((userCredential) => {
+            // Signed in successfully
+            const user = userCredential.user;
+            console.log('User signed in:', user);
+            // Redirect user to the congratulations page
+            window.location.href = 'NextPage.html';
+        })
+        .catch((error) => {
+            // Handle errors
+            const errorMessage = error.message;
+            console.error('Login error:', errorMessage);
+            // Display error message to the user
+            const errorMessageElement = document.querySelector('.message');
+            errorMessageElement.textContent = errorMessage;
+        });
 });
-
-
 
 function showRegisterForm() {
     var registerForm = document.getElementById("register-form");

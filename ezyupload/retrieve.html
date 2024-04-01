@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Retrieval</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .file-list {
+    list-style: none;
+    padding: 0;
+  }
+  .file-item {
+    margin-bottom: 10px;
+  }
+  .file-link {
+    display: block;
+    color: #333;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Files Stored in Firebase Storage</h2>
+    <ul class="file-list" id="fileList">
+      <!-- File items will be dynamically added here -->
+    </ul>
+  </div>
+  
+  <!-- Include Firebase SDKs using script tags -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script>
+    // Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
+      authDomain: "ezyupload-da972.firebaseapp.com",
+      projectId: "ezyupload-da972",
+      storageBucket: "ezyupload-da972.appspot.com",
+      messagingSenderId: "563462109953",
+      appId: "1:563462109953:web:038176fad3659884a0f900",
+    };
+   
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  
+    // Reference to the storage service
+    var storage = firebase.storage();
+    
+    // Reference to the root of your storage bucket
+    var storageRef = storage.ref();
+    
+    // Reference to the directory where your files are stored (adjust folder name if needed)
+    var filesRef = storageRef.child('uploads');
+    
+    // Get a list of files in the 'uploads' directory
+    filesRef.listAll().then(function(result) {
+      result.items.forEach(function(itemRef) {
+        // Get the download URL for each file
+        itemRef.getDownloadURL().then(function(url) {
+          // Create a list item for each file and add it to the file list
+          var fileList = document.getElementById('fileList');
+          var listItem = document.createElement('li');
+          var link = document.createElement('a');
+          link.setAttribute('href', url);
+          link.setAttribute('class', 'file-link');
+          link.textContent = itemRef.name;
+          listItem.appendChild(link);
+          fileList.appendChild(listItem);
+        }).catch(function(error) {
+          console.error('Error getting download URL:', error);
+        });
+      });
+    }).catch(function(error) {
+      console.error('Error listing files:', error);
+    });
+  </script>
+  
+  </body>
+  </html>
