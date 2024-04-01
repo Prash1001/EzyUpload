@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations!</title>
+</head>
+<body>
+    <h1>Congratulations!</h1>
+    <p>Welcome, <span id="user-email"></span>! You have successfully signed in.</p>
+
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js"></script>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
+            authDomain: "ezyupload-da972.firebaseapp.com",
+            projectId: "ezyupload-da972",
+            storageBucket: "ezyupload-da972.appspot.com",
+            messagingSenderId: "563462109953",
+            appId: "1:563462109953:web:038176fad3659884a0f900",
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Get the user's email
+        const userEmail = firebase.auth().currentUser.email;
+
+        // Display the user's email
+        document.getElementById('user-email').textContent = userEmail;
+    </script>
+</body>
+</html>

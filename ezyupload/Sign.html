@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js" type="module"></script>
+    <script src="auth.js" type="module"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .login-container input[type="submit"],
+        .login-container .google-signin-btn {
+            width: 100%;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-container input[type="submit"]:hover,
+        .login-container .google-signin-btn:hover {
+            background-color: #45a049;
+        }
+
+        .login-container .message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .signup-link {
+            margin-top: 10px;
+            text-decoration: none;
+            color: #333;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        /* Hide register form by default */
+        .register-form {
+            display: none;
+        }
+
+        .continue-with-google {
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="text" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <div class="message"></div>
+        <div class="continue-with-google">
+            <button class="google-signin-btn">Sign in with Google</button>
+        </div>
+        <div class="signup-link" onclick="showRegisterForm()">Sign up</div>
+        <form id="register-form" class="register-form" style="display: none;">
+            <h2>Register</h2>
+            <input type="text" name="fullname" placeholder="Full Name" required>
+            <input type="text" name="email" placeholder="Email" required>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Register">
+        </form>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
