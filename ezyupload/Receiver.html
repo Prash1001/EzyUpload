@@ -1,80 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Retrieval</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .file-list {
+    list-style: none;
+    padding: 0;
+  }
+  .file-item {
+    margin-bottom: 10px;
+  }
+  .file-link {
+    display: block;
+    color: #333;
+    text-decoration: none;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  li a:hover {
+    background-color: #111;
+  }
 
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .header {
-            background-color: #4CAF50;
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .download-section {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-        }
-
-        .download-link {
-            background-color: #4CAF50;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .download-link:hover {
-            background-color: #45a049;
-        }
-
-        .footer {
-            background-color: #333;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+  /* Style for the form input field */
+  .code-input {
+    margin-bottom: 10px;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Welcome to Download Page</h1>
-            <p>Download your files here</p>
-        </div>
+  <ul>
+    <li><a class="active" href="/ezyupload/index.html">Home</a></li>
+    <li><a href="./Receiver.html">News</a></li>
+    <li><a href="./Sign.html">Contact</a></li>
+    <li><a href="./retrieve.html">About</a></li>
+  </ul>
 
-        <div class="download-section">
-            <h2>File Name</h2>
-            <a href="path/to/your/file" class="download-link">Download</a>
-        </div>
-    </div>
+  <div class="container">
+    <h2>File Retrieval</h2>
 
-    <div class="footer">
-        <p>&copy; 2024 EasyDownload. All rights reserved.</p>
+    <!-- Form for code input -->
+    <form id="file-retrieve-form">
+      <label for="codeInput">Enter Code:</label>
+      <input type="text" id="codeInput" class="code-input" required>
+      <button type="submit">Retrieve File</button>
+    </form>
+
+    <div class="file-list" id="fileList">
+      <!-- File items will be dynamically added here -->
     </div>
+  </div>
+
+  <!-- Include Firebase SDKs using script tags -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script>
+    // Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
+      authDomain: "ezyupload-da972.firebaseapp.com",
+      projectId: "ezyupload-da972",
+      storageBucket: "ezyupload-da972.appspot.com",
+      messagingSenderId: "563462109953",
+      appId: "1:563462109953:web:038176fad3659884a0f900",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Reference to the storage service
+    var storage = firebase.storage();
+
+    // Reference to the root of your storage bucket
+    var storageRef = storage.ref();
+
+    // Function to retrieve file based on code input
+    document.getElementById('file-retrieve-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var code = document.getElementById('codeInput').value.trim();
+      if (code.length >= 5) {
+        code = code.slice(0, 5); // Take only the first 5 characters
+        var fileList = document.getElementById('fileList');
+        fileList.innerHTML = ''; // Clear previous file list
+
+        // List all files in the "uploads" directory
+        storageRef.child('uploads').listAll().then(function(result) {
+          var fileFound = false;
+
+          result.items.forEach(function(itemRef) {
+            // Extract the code from the file name
+            var fileCode = itemRef.name.split('_')[0];
+
+            // Check if the code matches the provided code
+            if (fileCode === code) {
+              // Get the download URL for the matching file
+              itemRef.getDownloadURL().then(function(url) {
+                // Create a link to download the file
+                var listItem = document.createElement('li');
+                var link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('class', 'file-link');
+                link.setAttribute('download', itemRef.name); // Set the download attribute
+                link.textContent = itemRef.name;
+                listItem.appendChild(link);
+                fileList.appendChild(listItem);
+                fileFound = true;
+              }).catch(function(error) {
+                console.error('Error getting download URL:', error);
+              });
+            }
+          });
+
+          if (!fileFound) {
+            fileList.innerHTML = '<li>No file found for the provided code.</li>';
+          }
+        }).catch(function(error) {
+          console.error('Error listing files:', error);
+        });
+      } else {
+        alert('Please enter a code with at least 5 characters or numbers.');
+      }
+    });
+  </script>
 </body>
 </html>

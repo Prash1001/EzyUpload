@@ -60,9 +60,38 @@
             bottom: 0;
             width: 100%;
         }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+          }
+          
+          li {
+            float: left;
+          }
+          
+          li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+          }
+          
+          li a:hover {
+            background-color: #111;
+          }
     </style>
 </head>
 <body>
+    <ul>
+        <li><a class="active" href="/index.html">Home</a></li>
+        <li><a href="./Receiver.html">News</a></li>
+        <li><a href="./Sign.html">Contact</a></li>
+        <li><a href="./retrieve.html">About</a></li>
+    </ul>
     <div class="container">
         <div class="header">
             <h1>Welcome to EasyUpload</h1>
@@ -75,6 +104,10 @@
                 <br>
                 <input type="submit" value="Upload">
             </form>
+            <div id="file-link-container" style="display: none;">
+                <p>Your file has been uploaded successfully!</p>
+                <p>Use this code to retrieve your file: <span id="file-link"></span></p>
+            </div>
         </div>
     </div>
 
@@ -99,11 +132,20 @@
 
         const storage = firebase.storage();
         const fileUploadForm = document.getElementById('file-upload-form');
+        const fileLinkContainer = document.getElementById('file-link-container');
+        const fileLinkElement = document.getElementById('file-link');
 
         fileUploadForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const fileInput = document.getElementById('file').files[0];
-            const storageRef = storage.ref(`uploads/${fileInput.name}`);
+
+            // Generate a unique ID of 5 characters
+            const fileId = generateSequentialKey(5);
+
+            // Use the generated ID to construct the file name
+            const fileName = `${fileId}_${fileInput.name}`;
+
+            const storageRef = storage.ref(`uploads/${fileName}`);
             const uploadTask = storageRef.put(fileInput);
 
             uploadTask.on('state_changed',
@@ -117,13 +159,22 @@
                 () => {
                     // Handle successful uploads
                     console.log('Upload successful');
-                    // Optionally, you can retrieve the download URL for the uploaded file
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        console.log('File available at', downloadURL);
-                    });
+                    // Display the file link container with the generated fileId
+                    fileLinkContainer.style.display = 'block';
+                    fileLinkElement.textContent = fileId;
                 }
             );
         });
+
+        // Function to generate a sequential key with specified length
+        function generateSequentialKey(length) {
+            var key = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            for (var i = 0; i < length; i++) {
+                key += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return key;
+        }
     </script>
 </body>
 </html>

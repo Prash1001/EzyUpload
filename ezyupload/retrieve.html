@@ -31,20 +31,62 @@
     color: #333;
     text-decoration: none;
   }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  li a:hover {
+    background-color: #111;
+  }
+
+  /* Style for the form input field */
+  .code-input {
+    margin-bottom: 10px;
+  }
 </style>
 </head>
 <body>
+  <ul>
+    <li><a class="active" href="/ezyupload/index.html">Home</a></li>
+    <li><a href="./Receiver.html">News</a></li>
+    <li><a href="./Sign.html">Contact</a></li>
+    <li><a href="./retrieve.html">About</a></li>
+  </ul>
 
   <div class="container">
-    <h2>Files Stored in Firebase Storage</h2>
-    <ul class="file-list" id="fileList">
+    <h2>File Retrieval</h2>
+
+    <!-- Form for code input -->
+    <form id="file-retrieve-form">
+      <label for="codeInput">Enter Code:</label>
+      <input type="text" id="codeInput" class="code-input" required>
+      <button type="submit">Retrieve File</button>
+    </form>
+
+    <div class="file-list" id="fileList">
       <!-- File items will be dynamically added here -->
-    </ul>
+    </div>
   </div>
   
   <!-- Include Firebase SDKs using script tags -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
   <script>
     // Firebase configuration
     var firebaseConfig = {
@@ -65,31 +107,46 @@
     // Reference to the root of your storage bucket
     var storageRef = storage.ref();
     
-    // Reference to the directory where your files are stored (adjust folder name if needed)
-    var filesRef = storageRef.child('uploads');
-    
-    // Get a list of files in the 'uploads' directory
-    filesRef.listAll().then(function(result) {
-      result.items.forEach(function(itemRef) {
-        // Get the download URL for each file
-        itemRef.getDownloadURL().then(function(url) {
-          // Create a list item for each file and add it to the file list
+    // Function to retrieve file based on code input
+    document.getElementById('file-retrieve-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var code = document.getElementById('codeInput').value.trim();
+      if (code) {
+        // Retrieve list of files in storage directory
+        storageRef.listAll().then(function(result) {
           var fileList = document.getElementById('fileList');
-          var listItem = document.createElement('li');
-          var link = document.createElement('a');
-          link.setAttribute('href', url);
-          link.setAttribute('class', 'file-link');
-          link.textContent = itemRef.name;
-          listItem.appendChild(link);
-          fileList.appendChild(listItem);
+          fileList.innerHTML = ''; // Clear previous file list
+          var fileFound = false;
+          result.items.forEach(function(itemRef) {
+            // Check if file name contains the code
+            if (itemRef.name.split('_')[0] === code) { // Split the filename and check if the code matches
+              // Get the download URL for the matching file
+              itemRef.getDownloadURL().then(function(url) {
+                // Create a link to download the file
+                var listItem = document.createElement('li');
+                var link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('class', 'file-link');
+                link.textContent = itemRef.name;
+                listItem.appendChild(link);
+                fileList.appendChild(listItem);
+                fileFound = true;
+              }).catch(function(error) {
+                console.error('Error getting download URL:', error);
+              });
+            }
+          });
+          if (!fileFound) {
+            fileList.innerHTML = '<li>No file found for the provided code.</li>';
+          }
         }).catch(function(error) {
-          console.error('Error getting download URL:', error);
+          console.error('Error listing files:', error);
         });
-      });
-    }).catch(function(error) {
-      console.error('Error listing files:', error);
+      } else {
+        alert('Please enter a code.');
+      }
     });
   </script>
   
-  </body>
-  </html>
+</body>
+</html>
