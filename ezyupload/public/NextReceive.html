@@ -59,14 +59,55 @@
   .code-input {
     margin-bottom: 10px;
   }
-</style>
+
+  .code-input {
+    width: 100%;
+    max-width: 220px;
+    height: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+  }
+  
+  .code-input:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+  }
+  
+  .code-input:active {
+    transform: scale(0.95);
+  }
+  
+  .code-input:focus {
+    border: 2px solid grey;
+  }
+  button {
+    color: #090909;
+    padding: 0.7em 1.7em;
+    font-size: 13px;
+    border-radius: 0.5em;
+    background: #e8e8e8;
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  }
+  
+  button:active {
+    color: #666;
+    box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+  }
+  </style>
 </head>
 <body>
   <ul>
-    <li><a class="active" href="/ezyupload/index.html">Home</a></li>
-    <li><a href="./Receiver.html">News</a></li>
-    <li><a href="./Sign.html">Contact</a></li>
-    <li><a href="./retrieve.html">About</a></li>
+    <li><a class="active" href="./NextIndex.html">Upload File</a></li>
+    <li><a href="./NextReceive.html">Retrieve File</a></li>
+    <li><a href="./Sign.html">Sign In</a></li>
+    <li><a href="#" id="sign-out-btn">Sign Out</a></li>
   </ul>
 
   <div class="container">
@@ -75,7 +116,7 @@
     <!-- Form for code input -->
     <form id="file-retrieve-form">
       <label for="codeInput">Enter Code:</label>
-      <input type="text" id="codeInput" class="code-input" required>
+      <input type="text" id="codeInput" placeholder="Enter the code here" class="code-input" required>
       <button type="submit">Retrieve File</button>
     </form>
 
@@ -111,8 +152,8 @@
     document.getElementById('file-retrieve-form').addEventListener('submit', function(event) {
       event.preventDefault();
       var code = document.getElementById('codeInput').value.trim();
-      if (code.length >= 5) {
-        code = code.slice(0, 5); // Take only the first 5 characters
+      if (code.length >= 7) { // Check for 7-character length
+        code = code.slice(0, 7); // Take only the first 7 characters
         var fileList = document.getElementById('fileList');
         fileList.innerHTML = ''; // Clear previous file list
 
@@ -145,15 +186,45 @@
           });
 
           if (!fileFound) {
-            fileList.innerHTML = '<li>No file found for the provided code.</li>';
+            fileList.innerHTML = '<li>Files Found :- </li>';
           }
         }).catch(function(error) {
           console.error('Error listing files:', error);
         });
       } else {
-        alert('Please enter a code with at least 5 characters or numbers.');
+        alert('Please enter a code with at least 7 characters or numbers.');
       }
     });
+
+    // Initialize Firebase
+    var firebaseConfig = {
+      apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
+      authDomain: "ezyupload-da972.firebaseapp.com",
+      projectId: "ezyupload-da972",
+      storageBucket: "ezyupload-da972.appspot.com",
+      messagingSenderId: "563462109953",
+      appId: "1:563462109953:web:038176fad3659884a0f900",
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Reference to the Firebase Auth service
+    var auth = firebase.auth();
+
+    // Add event listener to the "Sign Out" link
+    document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
+
+    // Function to sign out the user
+    function signOutUser() {
+      auth.signOut().then(() => {
+        // Sign-out successful.
+        console.log('User signed out successfully');
+        // Redirect user to the sign-in page or homepage
+        window.location.href = 'Sign.html'; // Change to the appropriate page
+      }).catch((error) => {
+        // An error happened.
+        console.error('Sign-out error:', error);
+      });
+    }
   </script>
 </body>
 </html>

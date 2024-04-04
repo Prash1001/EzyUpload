@@ -18,6 +18,7 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 200px;
   }
   .file-list {
     list-style: none;
@@ -52,21 +53,67 @@
   }
   
   li a:hover {
-    background-color: #111;
+    background-color: #3f3b3b;
+    color: white;
   }
 
   /* Style for the form input field */
   .code-input {
     margin-bottom: 10px;
   }
+
+  .code-input {
+    margin-bottom: 10px;
+  }
+
+  .code-input {
+    width: 100%;
+    max-width: 220px;
+    height: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+  }
+  
+  .code-input:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+  }
+  
+  .code-input:active {
+    transform: scale(0.95);
+  }
+  
+  .code-input:focus {
+    border: 2px solid grey;
+  }
+  button {
+    color: #090909;
+    padding: 0.7em 1.7em;
+    font-size: 13px;
+    border-radius: 0.5em;
+    background: #e8e8e8;
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  }
+  
+  button:active {
+    color: #666;
+    box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+  }
 </style>
 </head>
 <body>
   <ul>
-    <li><a class="active" href="/ezyupload/index.html">Home</a></li>
-    <li><a href="./Receiver.html">News</a></li>
-    <li><a href="./Sign.html">Contact</a></li>
-    <li><a href="./retrieve.html">About</a></li>
+    
+    <li><a class="active" href="/ezyupload/index.html">Upload</a></li>
+    <li><a href="./Receiver.html">Retrieve</a></li>
+    <li><a href="./Sign.html">Sign in</a></li>
   </ul>
 
   <div class="container">
@@ -83,7 +130,7 @@
       <!-- File items will be dynamically added here -->
     </div>
   </div>
-  
+
   <!-- Include Firebase SDKs using script tags -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
@@ -97,29 +144,35 @@
       messagingSenderId: "563462109953",
       appId: "1:563462109953:web:038176fad3659884a0f900",
     };
-   
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-  
+
     // Reference to the storage service
     var storage = firebase.storage();
-    
+
     // Reference to the root of your storage bucket
     var storageRef = storage.ref();
-    
+
     // Function to retrieve file based on code input
     document.getElementById('file-retrieve-form').addEventListener('submit', function(event) {
       event.preventDefault();
       var code = document.getElementById('codeInput').value.trim();
-      if (code) {
-        // Retrieve list of files in storage directory
-        storageRef.listAll().then(function(result) {
-          var fileList = document.getElementById('fileList');
-          fileList.innerHTML = ''; // Clear previous file list
+      if (code.length >= 5) {
+        code = code.slice(0, 5); // Take only the first 5 characters
+        var fileList = document.getElementById('fileList');
+        fileList.innerHTML = ''; // Clear previous file list
+
+        // List all files in the "uploads" directory
+        storageRef.child('uploads').listAll().then(function(result) {
           var fileFound = false;
+
           result.items.forEach(function(itemRef) {
-            // Check if file name contains the code
-            if (itemRef.name.split('_')[0] === code) { // Split the filename and check if the code matches
+            // Extract the code from the file name
+            var fileCode = itemRef.name.split('_')[0];
+
+            // Check if the code matches the provided code
+            if (fileCode === code) {
               // Get the download URL for the matching file
               itemRef.getDownloadURL().then(function(url) {
                 // Create a link to download the file
@@ -127,6 +180,7 @@
                 var link = document.createElement('a');
                 link.setAttribute('href', url);
                 link.setAttribute('class', 'file-link');
+                link.setAttribute('download', itemRef.name); // Set the download attribute
                 link.textContent = itemRef.name;
                 listItem.appendChild(link);
                 fileList.appendChild(listItem);
@@ -136,17 +190,17 @@
               });
             }
           });
+
           if (!fileFound) {
-            fileList.innerHTML = '<li>No file found for the provided code.</li>';
+            fileList.innerHTML = '<li>Files Found :- </li>';
           }
         }).catch(function(error) {
           console.error('Error listing files:', error);
         });
       } else {
-        alert('Please enter a code.');
+        alert('Please enter a code with at least 5 characters or numbers.');
       }
     });
   </script>
-  
 </body>
 </html>

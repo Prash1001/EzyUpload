@@ -6,7 +6,6 @@
     <title>Login Page</title>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js" type="module"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js" type="module"></script>
-    <script src="auth.js" type="module"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,6 +24,8 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 300px;
             text-align: center;
+            margin: auto;
+            margin-top: 100px;
         }
 
         .login-container h2 {
@@ -60,6 +61,8 @@
         .login-container .message {
             color: red;
             margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .signup-link {
@@ -106,10 +109,10 @@
 </head>
 <body>
     <ul>
-        <li><a class="active" href="./index.html">Home</a></li>
-        <li><a href="./Receiver.html">News</a></li>
-        <li><a href="./Sign.html">Contact</a></li>
-        <li><a href="./retrieve.html">About</a></li>
+    
+        <li><a class="active" href="/ezyupload/index.html">Upload</a></li>
+        <li><a href="./Receiver.html">Retrieve</a></li>
+        <li><a href="./Sign.html">Sign in</a></li>
       </ul>
     <div class="login-container">
         <h2>Login</h2>
@@ -119,20 +122,62 @@
             <input type="submit" value="Login">
         </form>
         <div class="message"></div>
-        <div class="continue-with-google">
-            <button class="google-signin-btn">Sign in with Google</button>
-        </div>
-        <div class="signup-link" onclick="showRegisterForm()">Sign up</div>
+        
+        <div class="signup-link" id="signup-link">Sign up</div>
         <form id="register-form" class="register-form" style="display: none;">
             <h2>Register</h2>
-            <input type="text" name="fullname" placeholder="Full Name" required>
             <input type="text" name="email" placeholder="Email" required>
-            <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="submit" value="Register">
         </form>
+        <div id="register-message" class="message"></div>
     </div>
 
-    <script src="auth.js"></script>
+    <script type="module">
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Function to show the registration form
+        function showRegisterForm() {
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("register-form").style.display = "block";
+        }
+
+        // Function to handle user registration
+        document.getElementById("signup-link").addEventListener("click", function() {
+            showRegisterForm();
+        });
+
+        document.getElementById("register-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const email = document.getElementById("register-form").elements["email"].value;
+            const password = document.getElementById("register-form").elements["password"].value;
+            
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log("User registered:", user);
+                document.getElementById("register-form").reset();
+                document.getElementById("register-message").innerText = "User registered successfully.";
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error("Registration error:", errorMessage);
+                document.getElementById("register-message").innerText = errorMessage;
+            });
+        });
+    </script>
 </body>
 </html>
