@@ -139,53 +139,74 @@
 <!-- Example: Authentication -->
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
 
-    <script type="module">
+<script type="module">
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
+        authDomain: "ezyupload-da972.firebaseapp.com",
+        projectId: "ezyupload-da972",
+        storageBucket: "ezyupload-da972.appspot.com",
+        messagingSenderId: "563462109953",
+        appId: "1:563462109953:web:038176fad3659884a0f900",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Function to show the registration form
+    function showRegisterForm() {
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("register-form").style.display = "block";
+    }
+
+    // Function to handle user registration
+    document.getElementById("signup-link").addEventListener("click", function() {
+        showRegisterForm();
+    });
+
+    document.getElementById("register-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const email = document.getElementById("register-form").elements["email"].value;
+        const password = document.getElementById("register-form").elements["password"].value;
         
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
-            authDomain: "ezyupload-da972.firebaseapp.com",
-            projectId: "ezyupload-da972",
-            storageBucket: "ezyupload-da972.appspot.com",
-            messagingSenderId: "563462109953",
-            appId: "1:563462109953:web:038176fad3659884a0f900",
-            
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Function to show the registration form
-        function showRegisterForm() {
-            document.getElementById("login-form").style.display = "none";
-            document.getElementById("register-form").style.display = "block";
-        }
-
-        // Function to handle user registration
-        document.getElementById("signup-link").addEventListener("click", function() {
-            showRegisterForm();
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log("User registered:", user);
+            document.getElementById("register-form").reset();
+            document.getElementById("register-message").innerText = "User registered successfully.";
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Registration error:", errorMessage);
+            document.getElementById("register-message").innerText = errorMessage;
         });
+    });
 
-        document.getElementById("register-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const email = document.getElementById("register-form").elements["email"].value;
-            const password = document.getElementById("register-form").elements["password"].value;
-            
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                console.log("User registered:", user);
-                document.getElementById("register-form").reset();
-                document.getElementById("register-message").innerText = "User registered successfully.";
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.error("Registration error:", errorMessage);
-                document.getElementById("register-message").innerText = errorMessage;
-            });
+    // Function to handle user login
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const email = document.getElementById("login-form").elements["email"].value;
+        const password = document.getElementById("login-form").elements["password"].value;
+
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log("User logged in:", user);
+            // Redirect to next page
+            window.location.href = "nextpage.html";
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Login error:", errorMessage);
+            document.getElementById("login-message").innerText = errorMessage;
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
