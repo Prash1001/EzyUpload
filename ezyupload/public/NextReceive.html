@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>File Retrieval</title>
+<link  rel="stylesheet" href="background.css">
+
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -32,30 +34,7 @@
     color: #333;
     text-decoration: none;
   }
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-  }
-  
-  li {
-    float: left;
-  }
-  
-  li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  li a:hover {
-    background-color: #111;
-    color: white ;
-  }
+
 
   /* Style for the form input field */
   .code-input {
@@ -106,6 +85,7 @@
 </head>
 <body>
   <ul>
+    <li id="logo"><a> EasyUpload</a></li>
     <li><a class="active" href="./NextIndex.html">Upload File</a></li>
     <li><a href="./NextReceive.html">Retrieve File</a></li>
     <li><a href="./Sign.html">Sign In</a></li>
