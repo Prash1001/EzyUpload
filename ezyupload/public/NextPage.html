@@ -4,63 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Congratulations!</title>
-    <link  rel="stylesheet" href="background.css">
-    <style> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('./6417742.jpg'); /* Specify the background image */
+            background-size: cover; /* Ensure the background image covers the entire body */
+            background-repeat: no-repeat; /* Prevent background image from repeating */
+            background-color: #f5f5f5; /* Fallback background color */
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 20px;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #4CAF50;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: lightgreen; /* Background color for the box */
+            border-radius: 10px;
+            height: 200px;
+        }
+
+        h1, p {
+            text-align: center;
+        }
+
+        #user-email {
+            color: #9c41c7;
+            font-weight: bold;
+        }
+
+        .info-box {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 750px; /* Set a maximum width to limit the width of the info boxes */
+    margin-left: auto; /* Center the info boxes horizontally */
+    margin-right: auto;
+}
+
+.info-box h2 {
+    color: #4CAF50;
+}
+
+.info-box p {
+    color: #555;
+}
+
 
     </style>
 </head>
 <body>
-  <ul>
+    <ul>
         <li id="logo"><a href="./index.html">EasyUpload</a></li>
         <li><a class="active" href="./NextIndex.html">Upload</a></li>
         <li><a href="./NextReceive.html">Retrieve</a></li>
-        <li><a href="#" id="sign-out-btn">Sign out</a></li> <!-- Add id="sign-out-btn" -->
+        <li><a href="#" id="sign-out-btn">Sign out</a></li>
     </ul>
-  <h1>Congratulations!</h1>
-  <p>Welcome, <span id="user-email"></span>! You have successfully signed in.</p>
+    <div class="container">
+        <h1>Congratulations!</h1>
+        <p>Welcome, <span id="user-email"></span>! You have successfully signed in.</p>
+    </div>
+    <div class="info-box">
+        <h2>About EasyUpload</h2>
+        <p>EasyUpload is a simple and efficient file upload and retrieval system designed to make sharing files hassle-free. With EasyUpload, you can securely upload various file types, including images, PDFs, and documents, and retrieve them using unique access codes.</p>
+    </div>
 
-  <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+    
 
-      // Initialize Firebase
-      const firebaseConfig = {
-          apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
-          authDomain: "ezyupload-da972.firebaseapp.com",
-          projectId: "ezyupload-da972",
-          storageBucket: "ezyupload-da972.appspot.com",
-          messagingSenderId: "563462109953",
-          appId: "1:563462109953:web:038176fad3659884a0f900",
-      };
-      const app = initializeApp(firebaseConfig);
+    <div class="info-box">
+        <h2>How It Works</h2>
+        <p><strong>Upload:</strong> Simply select the file you want to upload, and EasyUpload will generate a unique access code for you.</p>
+        <p><strong>Retrieve:</strong> To retrieve your file, enter the unique access code provided during the upload process, and EasyUpload will fetch your file securely.</p>
+    </div>
 
-      const auth = getAuth(app);
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
 
-      // Wait for Firebase initialization to complete
-      onAuthStateChanged(auth, (user) => {
-          if (user) {
-              // Get the user's email
-              const userEmail = user.email;
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
+            authDomain: "ezyupload-da972.firebaseapp.com",
+            projectId: "ezyupload-da972",
+            storageBucket: "ezyupload-da972.appspot.com",
+            messagingSenderId: "563462109953",
+            appId: "1:563462109953:web:038176fad3659884a0f900",
+        };
+        const app = initializeApp(firebaseConfig);
 
-              // Display the user's email
-              document.getElementById('user-email').textContent = userEmail;
-          } else {
-              // User is not signed in, handle accordingly
-          }
-      });
+        const auth = getAuth(app);
 
-      // Function to handle sign-out
-      document.getElementById('sign-out-btn').addEventListener('click', () => {
-          signOut(auth)
-              .then(() => {
-                  console.log('User signed out successfully');
-                  // Redirect user to the index page after sign-out
-                  window.location.href = 'index.html';
-              })
-              .catch((error) => {
-                  console.error('Sign out error:', error);
-              });
-      });
-  </script>
+        // Wait for Firebase initialization to complete
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Get the user's email
+                const userEmail = user.email;
+
+                // Display the user's email
+                document.getElementById('user-email').textContent = userEmail;
+            } else {
+                // User is not signed in, handle accordingly
+            }
+        });
+
+        // Function to handle sign-out
+        document.getElementById('sign-out-btn').addEventListener('click', () => {
+            signOut(auth)
+                .then(() => {
+                    console.log('User signed out successfully');
+                    // Redirect user to the index page after sign-out
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Sign out error:', error);
+                });
+        });
+    </script>
 </body>
 </html>

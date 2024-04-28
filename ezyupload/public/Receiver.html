@@ -20,7 +20,7 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 200px;
+    height: 210px;
   }
   .file-list {
     list-style: none;
@@ -80,35 +80,168 @@
     transition: all 0.3s;
     box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
   }
+
+  
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('./6417742.jpg'); /* Add this line to set the background image */
+    background-size: cover; /* Adjusts the size of the background image to cover the entire body */
+    background-repeat: no-repeat; /* Prevents the background image from repeating */
+    background-color: #f5f5f5; /* Fallback background color */
+}
   
   button:active {
     color: #666;
     box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
   }
+
+  ul {
+    list-style-type: none; /* Remove bullet points from the list */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    background-color: #333; /* Set background color */
+    overflow: hidden; /* Ensure content does not overflow */
+}
+
+li {
+    float: left; /* Float the list items horizontally */
+}
+
+li b {
+    display: block; /* Make the links display as block elements */
+    color: white; /* Set text color */
+    text-align: center; /* Center align text */
+    padding: 14px 16px; /* Add padding */
+    text-decoration: none; /* Remove underline from links */
+}
+
+li a:hover {
+    background-color: #4CAF50; /* Change background color on hover */
+}
+
+.active {
+    background-color: #4CAF50; /* Set background color for active link */
+}
+
+
+button {
+    color: #090909;
+    padding: 0.7em 1.7em;
+    font-size: 13px;
+    border-radius: 0.5em;
+    background: #4CAF50;
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+button:hover {
+    background-color: #2f7133; /* Change background color to green on hover */
+    color: white; /* Change text color to white on hover */
+}
+
+button:active {
+    background-color: #2e7d32; /* Change background color to darker shade when active */
+    color: #666; /* Change text color to darker shade when active */
+    box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}
+
+.info-box {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.info-box h3 {
+    margin-top: 0;
+}
+
+.info-box p {
+    margin-bottom: 0;
+}
+
+
+/* Style for the highlighted file */
+/* Style for the highlighted file */
+.highlighted {
+  background-color: #aff8a5; /* Change background color for highlighted file */
+  padding: 10px;
+  border-radius: 5px;
+
+}
+
+/* Center the highlighted file within the container */
+.highlighted a {
+  display: inline-block; /* Set the link to display as inline-block */
+  text-align: center; /* Center align the link */
+  right: 300px;
+}
+
+
+
+
+
+
+
+
 </style>
 </head>
 <body>
   <ul>
     <li id="logo"><a href="./index.html">EasyUpload</a></li>
-    <li><a class="active" href="./index.html">Upload</a></li>
-    <li><a href="./Receiver.html">Retrieve</a></li>
+    <li><a  href="./index.html">Upload</a></li>
+    <li><a class="active" href="./Receiver.html">Retrieve</a></li>
     <li><a href="./Sign.html">Sign in</a></li>
   </ul>
 
   <div class="container">
-    <h2>File Retrieval</h2>
+    <h2 style="color: #4CAF50;">File Retrieval</h2>
+<br>
+
+    <!-- Information box -->
+    <div class="info-box">
+        <h3>How to Use:</h3>
+        <p>Enter the secret code provided when the file was uploaded to retrieve the file.</p>
+    </div>
 
     <!-- Form for code input -->
     <form id="file-retrieve-form">
-      <label for="codeInput">Enter Code:</label>
-      <input type="text" id="codeInput" class="code-input" required>
-      <button type="submit">Retrieve File</button>
+        <label for="codeInput">Enter Code:</label>
+        <input type="text" id="codeInput" class="code-input" required>
+        <button type="submit">Retrieve File</button>
     </form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+    <div class="info-box">
+      <h2 style="color: #4CAF50;">About EasyUpload</h2>
+
+      <p style="color: #333">EasyUpload is a simple and efficient file upload and retrieval system designed to make sharing files hassle-free. With EasyUpload, you can securely upload various file types, including images, PDFs, and documents, and retrieve them using unique access codes.</p>
+  </div>
+
+  
+
+  <div class="info-box">
+      <h2 style="color: #4CAF50;">How It Works</h2>
+      <p style="color: #333"><strong >Upload:</strong> Simply select the file you want to upload, and EasyUpload will generate a unique access code for you.</p>
+      <p style="color: #333"><strong>Retrieve:</strong> To retrieve your file, enter the unique access code provided during the upload process, and EasyUpload will fetch your file securely.</p>
+  </div>
+</div>
+
 
     <div class="file-list" id="fileList">
-      <!-- File items will be dynamically added here -->
+        <!-- File items will be dynamically added here -->
     </div>
-  </div>
+</div>
 
   <!-- Include Firebase SDKs using script tags -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -155,15 +288,21 @@
               // Get the download URL for the matching file
               itemRef.getDownloadURL().then(function(url) {
                 // Create a link to download the file
-                var listItem = document.createElement('li');
-                var link = document.createElement('a');
-                link.setAttribute('href', url);
-                link.setAttribute('class', 'file-link');
-                link.setAttribute('download', itemRef.name); // Set the download attribute
-                link.textContent = itemRef.name;
-                listItem.appendChild(link);
-                fileList.appendChild(listItem);
-                fileFound = true;
+// Create a link to download the file+++++++++++++++++++++++++++++++++++++
+var listItem = document.createElement('li');
+var link = document.createElement('a');
+link.setAttribute('href', url);
+link.setAttribute('class', 'file-link');
+link.setAttribute('download', itemRef.name); // Set the download attribute
+link.textContent = itemRef.name;
+
+// Add a class to highlight and center the retrieved file
+listItem.classList.add('highlighted');
+
+listItem.appendChild(link);
+fileList.appendChild(listItem);
+fileFound = true;
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
               }).catch(function(error) {
                 console.error('Error getting download URL:', error);
               });
@@ -171,7 +310,7 @@
           });
 
           if (!fileFound) {
-            fileList.innerHTML = '<li>Files Found :- </li>';
+            fileList.innerHTML = '<li></li>';
           }
         }).catch(function(error) {
           console.error('Error listing files:', error);
@@ -183,3 +322,6 @@
   </script>
 </body>
 </html>
+
+
+

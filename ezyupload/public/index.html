@@ -54,6 +54,67 @@
         }
 
         .footer {
+            background-color: #f5f5f5;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+            body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            background-image: url('./6417742.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+ 
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h2 {
+            color: #4CAF50;
+        }
+
+        .info-box p {
+            color: #555;
+        }
+
+
+        .footer {
             background-color: #333;
             color: #ffffff;
             text-align: center;
@@ -62,7 +123,116 @@
             bottom: 0;
             width: 100%;
         }
- 
+
+
+
+        .header {
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Add border radius for a softer look */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+.header h1 {
+    margin: 0; /* Remove default margin for the h1 element */
+    font-size: 2em; /* Increase font size for better emphasis */
+}
+
+.header p {
+    margin-top: 10px; /* Add some spacing between the heading and paragraph */
+    font-size: 1.2em; /* Increase font size for better readability */
+}
+
+
+.info-box {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 900px; /* Set a maximum width to limit the width of the info boxes */
+    margin-left: auto; /* Center the info boxes horizontally */
+    margin-right: auto;
+}
+
+.info-box h2 {
+    color: #4CAF50;
+}
+
+.info-box p {
+    color: #555;
+}
+
+.header {
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    margin: auto; /* Center the header horizontally */
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Set a maximum width for the header */
+}
+
+.header {
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    margin: auto; /* Center the header horizontally */
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 900px; /* Set a maximum width for the header */
+}
+
+
+.upload-form {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 900px; /* Set the width to 900px */
+    margin: auto; /* Center the box horizontally */
+}
+
+
+ul {
+    list-style-type: none; /* Remove bullet points from the list */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    background-color: #333; /* Set background color */
+    overflow: hidden; /* Ensure content does not overflow */
+}
+
+li {
+    float: left; /* Float the list items horizontally */
+}
+
+li a {
+    display: block; /* Make the links display as block elements */
+    color: white; /* Set text color */
+    text-align: center; /* Center align text */
+    padding: 14px 16px; /* Add padding */
+    text-decoration: none; /* Remove underline from links */
+}
+
+li a:hover {
+    background-color: #4CAF50; /* Change background color on hover */
+}
+
+.active {
+    background-color: #4CAF50; /* Set background color for active link */
+}
+
+
+
     </style>
 </head>
 <body>
@@ -91,9 +261,20 @@
         </div>
     </div>
 
-    <div class="footer">
-        <p>&copy; 2024 EasyUpload. All rights reserved.</p>
+    <div class="info-box">
+        <h2>About EasyUpload</h2>
+        <p>EasyUpload is a simple and efficient file upload and retrieval system designed to make sharing files hassle-free. With EasyUpload, you can securely upload various file types, including images, PDFs, and documents, and retrieve them using unique access codes.</p>
     </div>
+
+    
+
+    <div class="info-box">
+        <h2>How It Works</h2>
+        <p><strong>Upload:</strong> Simply select the file you want to upload, and EasyUpload will generate a unique access code for you.</p>
+        <p><strong>Retrieve:</strong> To retrieve your file, enter the unique access code provided during the upload process, and EasyUpload will fetch your file securely.</p>
+    </div>
+</div>
+
 
     <!-- Include Firebase SDK scripts from Firebase CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
