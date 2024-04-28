@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="background.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin: auto;
+            margin-top: 100px;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .login-container input[type="submit"] {
+            width: 100%;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .login-container .message {
+            color: red;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+  <ul>
+      <li id="logo"><a href="./index.html" >EasyUpload</a></li>
+      <li><a class="active" href="./index.html">Upload</a></li>
+      <li><a href="./Receiver.html">Retrieve</a></li>
+      <li><a href="./Sign.html">Sign in</a></li>
+  </ul>
+  <div class="login-container">
+      <h2>Register</h2>
+      <form id="register-form">
+          <input type="text" name="email" placeholder="Email" required>
+          <input type="password" name="password" placeholder="Password" required>
+          <input type="submit" value="Register">
+      </form>
+      <div class="message" id="register-message"></div>
+      
+      <!-- Link to login.html -->
+      <a href="index.html" class="signup-link">Back to Login</a>
+  </div>
+
+  <!-- Firebase configuration -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+
+  <script>
+      // Firebase configuration
+      const firebaseConfig = {
+          apiKey: "AIzaSyBX-biPQullJve__X-WHwwzw6oxsiA7tMk",
+          authDomain: "ezyupload-da972.firebaseapp.com",
+          projectId: "ezyupload-da972",
+          storageBucket: "ezyupload-da972.appspot.com",
+          messagingSenderId: "563462109953",
+          appId: "1:563462109953:web:038176fad3659884a0f900",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Function to handle user registration
+      document.getElementById("register-form").addEventListener("submit", function(event) {
+          event.preventDefault();
+          const email = document.getElementById("register-form").elements["email"].value;
+          const password = document.getElementById("register-form").elements["password"].value;
+          
+          firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+              // Signed in 
+              const user = userCredential.user;
+              console.log("User registered:", user);
+              document.getElementById("register-form").reset();
+              document.getElementById("register-message").innerText = "User registered successfully.";
+              // Redirect to login page after successful registration
+              window.location.href = "index.html";
+          })
+          .catch((error) => {
+              const errorMessage = error.message;
+              console.error("Registration error:", errorMessage);
+              document.getElementById("register-message").innerText = errorMessage;
+          });
+      });
+  </script>
+</body>
+</html>

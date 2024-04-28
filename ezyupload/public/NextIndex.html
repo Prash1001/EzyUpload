@@ -67,10 +67,10 @@
 <body>
     <ul>
         <li id="logo"><a href="./index.html">EasyUpload</a></li>
-        <li><a class="active" href="./index.html">Upload</a></li>
-        <li><a href="./Receiver.html">Retrieve</a></li>
-        <li><a href="./Sign.html">Sign in</a></li>
-      </ul>
+        <li><a class="active" href="./NextIndex.html">Upload</a></li>
+        <li><a href="./NextReceiver.html">Retrieve</a></li>
+        <li><a href="./index.html" id="sign-out-btn">Sign out</a></li>
+    </ul>
     <div class="container">
         <div class="header">
             <h1>Welcome to EasyUpload</h1>
@@ -91,10 +91,6 @@
                 <p>Use this code to retrieve your file: <span id="file-link"></span></p>
             </div>
         </div>
-    </div>
-
-    <div class="footer">
-        <p>&copy; 2024 EasyUpload. All rights reserved.</p>
     </div>
 
     <!-- Include Firebase SDK scripts from Firebase CDN -->
@@ -140,6 +136,11 @@
             } else {
                 // User is signed out
                 ui.start('#firebaseui-auth-container', uiConfig);
+                // Redirect to error page if user is not signed in
+                const currentPage = window.location.href;
+                if (currentPage !== "error.html") {
+                    window.location.href = "error.html";
+                }
             }
         });
 
@@ -178,16 +179,15 @@
             );
         });
 
-        // Add event listener to the "Sign Out" link
+        // Function to sign out the user
         document.getElementById('sign-out-btn').addEventListener('click', signOutUser);
 
-        // Function to sign out the user
         function signOutUser() {
             auth.signOut().then(() => {
                 // Sign-out successful.
                 console.log('User signed out successfully');
-                // Redirect user to the sign-in page or homepage
-                window.location.href = 'Sign.html'; // Change to the appropriate page
+                // Redirect user to the index page
+                window.location.href = './index.html';
             }).catch((error) => {
                 // An error happened.
                 console.error('Sign-out error:', error);

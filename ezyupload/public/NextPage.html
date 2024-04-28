@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Congratulations!</title>
     <link  rel="stylesheet" href="background.css">
-    <style> </style>
+    <style> 
+
+    </style>
 </head>
 <body>
   <ul>
-        <h2>EasyUpload</h2>
-      <li><a class="active" href="./NextIndex.html">Upload File</a></li>
-      <li><a href="./NextReceive.html">Retrieve File</a></li>
-      <li><a href="./Sign.html">Sign In</a></li>
-      <li><a href="#" id="sign-out-btn">Sign Out</a></li>
-  </ul>
+        <li id="logo"><a href="./index.html">EasyUpload</a></li>
+        <li><a class="active" href="./NextIndex.html">Upload</a></li>
+        <li><a href="./NextReceive.html">Retrieve</a></li>
+        <li><a href="#" id="sign-out-btn">Sign out</a></li> <!-- Add id="sign-out-btn" -->
+    </ul>
   <h1>Congratulations!</h1>
   <p>Welcome, <span id="user-email"></span>! You have successfully signed in.</p>
 
@@ -53,6 +54,8 @@
           signOut(auth)
               .then(() => {
                   console.log('User signed out successfully');
+                  // Redirect user to the index page after sign-out
+                  window.location.href = 'index.html';
               })
               .catch((error) => {
                   console.error('Sign out error:', error);
